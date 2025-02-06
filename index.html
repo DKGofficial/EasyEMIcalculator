@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scrollable EMI Calculator with Repayment Schedule</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <div class="page-container">
@@ -52,6 +53,9 @@
                         </tbody>
                     </table>
                 </div>
+                 <!-- Download Button -->
+    <button onclick="downloadPDF()" class="download-btn">Download Schedule as PDF</button>
+</div>
             </div>
         </div>
     </div>
