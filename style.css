@@ -114,6 +114,22 @@ button:hover {
     background-color: #e9f7e9;
 }
 
+/* Download Button Styling */
+.download-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.download-btn:hover {
+    background-color: #0056b3;
+}
+
 /* Responsive Design for Mobile Devices */
 @media (max-width: 600px) {
     .calculator-container {
@@ -128,18 +144,4 @@ button:hover {
     .calculator-image {
         width: 80px;
     }
-    .download-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-    font-size: 16px;
-}
-
-.download-btn:hover {
-    background-color: #0056b3;
-}
 }
