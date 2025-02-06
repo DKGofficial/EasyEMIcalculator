@@ -5,13 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scrollable EMI Calculator with Repayment Schedule</title>
     <link rel="stylesheet" href="style.css">
+    
+    <!-- jsPDF Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- jsPDF AutoTable Plugin -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
     <div class="page-container">
         <div class="calculator-container">
-            <img src="calculator.png" alt="Calculator Image" class="calculator-image">
+            <!-- Calculator Image -->
             <img src="https://cdn-icons-png.flaticon.com/512/992/992700.png" alt="Calculator Image" class="calculator-image">
 
             <h1>EMI Calculator</h1>
@@ -54,9 +57,9 @@
                         </tbody>
                     </table>
                 </div>
-                 <!-- Download Button -->
-    <button onclick="downloadPDF()" class="download-btn">Download Schedule as PDF</button>
-</div>
+
+                <!-- Download Button -->
+                <button onclick="downloadPDF()" class="download-btn">Download Schedule as PDF</button>
             </div>
         </div>
     </div>
