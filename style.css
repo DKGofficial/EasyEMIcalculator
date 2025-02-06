@@ -4,8 +4,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: auto;
     margin: 0;
+    padding: 20px;
 }
 
 .calculator-container {
@@ -13,11 +14,11 @@ body {
     padding: 20px 30px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 350px;
     text-align: center;
 }
 
-h1 {
+h1, h2 {
     color: #333333;
     margin-bottom: 20px;
 }
@@ -56,10 +57,32 @@ button:hover {
     background-color: #45a049;
 }
 
-.result {
+.result, .schedule {
     margin-top: 20px;
 }
 
-.result h2 {
+.schedule table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.schedule th, .schedule td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.schedule th {
+    background-color: #f2f2f2;
     color: #333333;
+}
+
+.schedule tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.schedule tbody tr:hover {
+    background-color: #e9f7e9;
 }
