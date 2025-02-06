@@ -14,11 +14,11 @@ body {
     padding: 20px 30px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 350px;
+    width: 400px;
     text-align: center;
 }
 
-h1, h2 {
+h1, h2, h3 {
     color: #333333;
     margin-bottom: 20px;
 }
@@ -85,4 +85,9 @@ button:hover {
 
 .schedule tbody tr:hover {
     background-color: #e9f7e9;
+}
+
+.result h3 {
+    color: #555555;
+    margin: 10px 0;
 }
