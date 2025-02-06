@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMI Calculator</title>
+    <title>EMI Calculator with Repayment Schedule</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -24,6 +24,24 @@
         <button onclick="calculateEMI()">Calculate EMI</button>
         <div class="result">
             <h2>Monthly EMI: ₹<span id="emiResult">0</span></h2>
+        </div>
+
+        <!-- Repayment Schedule Section -->
+        <div class="schedule">
+            <h2>Repayment Schedule</h2>
+            <table id="scheduleTable">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Principal (₹)</th>
+                        <th>Interest (₹)</th>
+                        <th>Balance (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Schedule rows will be inserted here dynamically -->
+                </tbody>
+            </table>
         </div>
     </div>
 
