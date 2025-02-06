@@ -3,52 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMI Calculator with Detailed Repayment Schedule</title>
+    <title>Scrollable EMI Calculator with Repayment Schedule</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="calculator-container">
-        <h1>EMI Calculator</h1>
-        <div class="input-group">
-            <label for="loanAmount">Loan Amount (₹):</label>
-            <input type="number" id="loanAmount" placeholder="Enter loan amount">
-        </div>
-        <div class="input-group">
-            <label for="interestRate">Interest Rate (% per annum):</label>
-            <input type="number" id="interestRate" step="0.1" placeholder="Enter interest rate">
-        </div>
-        <div class="input-group">
-            <label for="loanTenure">Loan Tenure (in months):</label>
-            <input type="number" id="loanTenure" placeholder="Enter loan tenure in months">
-        </div>
-        <button onclick="calculateEMI()">Calculate EMI</button>
-        
-        <div class="result">
-            <h2>Monthly EMI: ₹<span id="emiResult">0</span></h2>
-            <h3>Total Interest Payable: ₹<span id="totalInterest">0</span></h3>
-            <h3>Total Repayment Amount: ₹<span id="totalRepayment">0</span></h3>
-        </div>
+    <div class="page-container">
+        <div class="calculator-container">
+            <!-- Calculator Image -->
+            <img src="https://cdn-icons-png.flaticon.com/512/992/992700.png" alt="Calculator Image" class="calculator-image">
 
-        <!-- Detailed Repayment Schedule Section -->
-        <div class="schedule">
-            <h2>Detailed Repayment Schedule</h2>
-            <table id="scheduleTable">
-                <thead>
-                    <tr>
-                        <th>Month</th>
-                        <th>EMI (₹)</th>
-                        <th>Principal Paid (₹)</th>
-                        <th>Interest Paid (₹)</th>
-                        <th>Outstanding Balance (₹)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Schedule rows will be inserted here dynamically -->
-                </tbody>
-            </table>
+            <h1>EMI Calculator</h1>
+            <div class="input-group">
+                <label for="loanAmount">Loan Amount (₹):</label>
+                <input type="number" id="loanAmount" placeholder="Enter loan amount">
+            </div>
+            <div class="input-group">
+                <label for="interestRate">Interest Rate (% per annum):</label>
+                <input type="number" id="interestRate" step="0.1" placeholder="Enter interest rate">
+            </div>
+            <div class="input-group">
+                <label for="loanTenure">Loan Tenure (in months):</label>
+                <input type="number" id="loanTenure" placeholder="Enter loan tenure in months">
+            </div>
+            <button onclick="calculateEMI()">Calculate EMI</button>
+            
+            <div class="result">
+                <h2>Monthly EMI: ₹<span id="emiResult">0</span></h2>
+                <h3>Total Interest Payable: ₹<span id="totalInterest">0</span></h3>
+                <h3>Total Repayment Amount: ₹<span id="totalRepayment">0</span></h3>
+            </div>
+
+            <!-- Detailed Repayment Schedule Section -->
+            <div class="schedule">
+                <h2>Detailed Repayment Schedule</h2>
+                <div class="table-container">
+                    <table id="scheduleTable">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>EMI (₹)</th>
+                                <th>Principal Paid (₹)</th>
+                                <th>Interest Paid (₹)</th>
+                                <th>Outstanding Balance (₹)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Schedule rows will be inserted here dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
