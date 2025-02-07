@@ -24,24 +24,26 @@ function calculateEMI() {
     createRepaymentSchedule(loanAmount, emi, interestRate, loanTenure);
 }
 
-// Function to calculate IRR using cash flow method
+// Function to calculate IRR using cash flow method (simplified approach)
 function calculateIRR(principal, emi, months) {
-    let irr = 0.1; // Start with an initial guess for IRR (10%)
+    let low = 0.0001;  // Lower bound for IRR
+    let high = 1;      // Upper bound for IRR
+    let irr = (low + high) / 2; // Initial guess for IRR
+    let npv = calculateNPV(principal, emi, irr, months);
     let tolerance = 0.0001; // Desired precision
-    let maxIterations = 1000; // Max iterations to prevent infinite loops
-    let npv, derivative;
 
-    for (let i = 0; i < maxIterations; i++) {
-        npv = calculateNPV(principal, emi, irr, months);
-        if (Math.abs(npv) < tolerance) {
-            return irr * 100; // Return as percentage
+    while (Math.abs(npv) > tolerance) {
+        if (npv > 0) {
+            low = irr;  // Increase the guess if npv > 0
+        } else {
+            high = irr; // Decrease the guess if npv < 0
         }
 
-        derivative = calculateNPVDerivative(principal, emi, irr, months);
-        irr -= npv / derivative; // Newton-Raphson method to adjust IRR guess
+        irr = (low + high) / 2; // Update the guess
+        npv = calculateNPV(principal, emi, irr, months); // Calculate new NPV
     }
 
-    return irr * 100; // Return as percentage if max iterations are reached
+    return irr * 100; // Return as percentage
 }
 
 // Function to calculate NPV (Net Present Value)
@@ -51,15 +53,6 @@ function calculateNPV(principal, emi, irr, months) {
         npv += emi / Math.pow(1 + irr, i); // Discount each EMI
     }
     return npv;
-}
-
-// Function to calculate the derivative of NPV
-function calculateNPVDerivative(principal, emi, irr, months) {
-    let derivative = 0;
-    for (let i = 1; i <= months; i++) {
-        derivative -= i * emi / Math.pow(1 + irr, i + 1); // Derivative of the NPV
-    }
-    return derivative;
 }
 
 // Function to generate the repayment schedule
