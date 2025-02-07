@@ -3,6 +3,10 @@ function calculateEMI() {
     const loanAmount = parseFloat(document.getElementById("loanAmount").value);
     const interestRate = parseFloat(document.getElementById("interestRate").value) / 100 / 12; // Monthly rate
     const loanTenure = parseInt(document.getElementById("loanTenure").value);
+    const cibilScore = parseInt(document.getElementById("cibilScore").value);
+
+    // Check CIBIL score
+    checkCIBILScore(cibilScore);
 
     // Calculate EMI using the formula
     const emi = (loanAmount * interestRate) / (1 - Math.pow(1 + interestRate, -loanTenure));
@@ -22,6 +26,33 @@ function calculateEMI() {
     
     // Create repayment schedule
     createRepaymentSchedule(loanAmount, emi, interestRate, loanTenure);
+}
+
+// Function to check CIBIL Score and give advice
+function checkCIBILScore(score) {
+    let cibilMessage = '';
+    let adjustedInterestRate = parseFloat(document.getElementById("interestRate").value);
+    
+    if (score >= 750) {
+        cibilMessage = "Excellent CIBIL score! You are eligible for a loan with lower interest rates.";
+        adjustedInterestRate -= 1; // Decrease interest rate if CIBIL score is high
+    } else if (score >= 650 && score < 750) {
+        cibilMessage = "Good CIBIL score! You have a fair chance of loan approval.";
+        adjustedInterestRate = adjustedInterestRate; // Keep interest rate as is
+    } else if (score >= 550 && score < 650) {
+        cibilMessage = "Fair CIBIL score! You may face higher interest rates or more stringent loan conditions.";
+        adjustedInterestRate += 1; // Increase interest rate if CIBIL score is low
+    } else {
+        cibilMessage = "Poor CIBIL score! You may face difficulties getting loan approval or may have to pay much higher interest rates.";
+        adjustedInterestRate += 2; // Significantly higher interest rate if CIBIL is poor
+    }
+
+    // Display CIBIL score feedback
+    document.getElementById("cibilFeedback").textContent = cibilMessage;
+
+    // Update the interest rate based on CIBIL score
+    document.getElementById("interestRate").value = adjustedInterestRate.toFixed(2);
+    document.getElementById("adjustedInterestRate").textContent = `Adjusted Interest Rate: ${adjustedInterestRate.toFixed(2)}%`;
 }
 
 // Function to calculate IRR using yearly cash flow method (simplified approach)
@@ -72,4 +103,17 @@ function createRepaymentSchedule(principal, emi, interestRate, months) {
         outstandingBalance -= principalPayment;
         totalInterestPaid += interestPayment;
 
-        const row = sched
+        const row = scheduleTable.insertRow();
+        row.innerHTML = `
+            <td>${i}</td>
+            <td>${(emi * 12).toFixed(2)}</td> <!-- Yearly EMI -->
+            <td>${principalPayment.toFixed(2)}</td>
+            <td>${interestPayment.toFixed(2)}</td>
+            <td>${outstandingBalance.toFixed(2)}</td>
+        `;
+    }
+}
+
+function downloadPDF() {
+    // Code to generate PDF (you can use jsPDF for this)
+}
