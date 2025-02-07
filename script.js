@@ -1,119 +1,118 @@
-function calculateEMI() {
-    // Get the loan details from the user input
-    const loanAmount = parseFloat(document.getElementById("loanAmount").value);
-    const interestRate = parseFloat(document.getElementById("interestRate").value) / 100 / 12; // Monthly rate
-    const loanTenure = parseInt(document.getElementById("loanTenure").value);
-    const cibilScore = parseInt(document.getElementById("cibilScore").value);
+function fetchCibilScore() {
+    const panCardNumber = document.getElementById("panCardNumber").value;
 
-    // Check CIBIL score
-    checkCIBILScore(cibilScore);
-
-    // Calculate EMI using the formula
-    const emi = (loanAmount * interestRate) / (1 - Math.pow(1 + interestRate, -loanTenure));
-    
-    // Calculate total repayment and interest
-    const totalRepayment = emi * loanTenure;
-    const totalInterest = totalRepayment - loanAmount;
-
-    // Calculate IRR (approximate using yearly cash flow method)
-    const irr = calculateIRR(loanAmount, emi, loanTenure);
-    
-    // Display results
-    document.getElementById("emiResult").textContent = emi.toFixed(2);
-    document.getElementById("totalInterest").textContent = totalInterest.toFixed(2);
-    document.getElementById("totalRepayment").textContent = totalRepayment.toFixed(2);
-    document.getElementById("irrResult").textContent = irr.toFixed(2);
-    
-    // Create repayment schedule
-    createRepaymentSchedule(loanAmount, emi, interestRate, loanTenure);
-}
-
-// Function to check CIBIL Score and give advice
-function checkCIBILScore(score) {
-    let cibilMessage = '';
-    let adjustedInterestRate = parseFloat(document.getElementById("interestRate").value);
-    
-    if (score >= 750) {
-        cibilMessage = "Excellent CIBIL score! You are eligible for a loan with lower interest rates.";
-        adjustedInterestRate -= 1; // Decrease interest rate if CIBIL score is high
-    } else if (score >= 650 && score < 750) {
-        cibilMessage = "Good CIBIL score! You have a fair chance of loan approval.";
-        adjustedInterestRate = adjustedInterestRate; // Keep interest rate as is
-    } else if (score >= 550 && score < 650) {
-        cibilMessage = "Fair CIBIL score! You may face higher interest rates or more stringent loan conditions.";
-        adjustedInterestRate += 1; // Increase interest rate if CIBIL score is low
-    } else {
-        cibilMessage = "Poor CIBIL score! You may face difficulties getting loan approval or may have to pay much higher interest rates.";
-        adjustedInterestRate += 2; // Significantly higher interest rate if CIBIL is poor
+    if (!panCardNumber) {
+        alert("Please enter your PAN card number.");
+        return;
     }
 
-    // Display CIBIL score feedback
-    document.getElementById("cibilFeedback").textContent = cibilMessage;
+    // Simulate API call to fetch CIBIL score (this is just a mock function)
+    // In reality, you'd send the PAN card number to an API like CIBIL/Experian/Equifax
+    simulateCibilAPICall(panCardNumber)
+        .then(cibilScore => {
+            document.getElementById("cibilFeedback").textContent = `Your CIBIL Score: ${cibilScore}`;
+            adjustInterestRateBasedOnCibil(cibilScore);
+        })
+        .catch(err => {
+            console.error("Error fetching CIBIL score:", err);
+            document.getElementById("cibilFeedback").textContent = "Error fetching CIBIL score. Please try again later.";
+        });
+}
 
-    // Update the interest rate based on CIBIL score
+function simulateCibilAPICall(panCardNumber) {
+    // Simulating an API response after a delay
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            // Mock CIBIL score based on PAN card number
+            // You can replace this with actual API logic
+            const mockCibilScore = Math.floor(Math.random() * (900 - 300 + 1)) + 300; // Mock CIBIL score between 300 and 900
+            resolve(mockCibilScore);
+        }, 2000);
+    });
+}
+
+function adjustInterestRateBasedOnCibil(cibilScore) {
+    let adjustedInterestRate = parseFloat(document.getElementById("interestRate").value);
+    
+    if (cibilScore >= 750) {
+        adjustedInterestRate -= 1; // Decrease interest rate if CIBIL score is high
+    } else if (cibilScore >= 650 && cibilScore < 750) {
+        adjustedInterestRate = adjustedInterestRate; // Keep interest rate as is
+    } else if (cibilScore >= 550 && cibilScore < 650) {
+        adjustedInterestRate += 1; // Increase interest rate if CIBIL score is low
+    } else {
+        adjustedInterestRate += 2; // Increase significantly if CIBIL score is very low
+    }
+
+    // Update the interest rate field and display adjusted interest rate
     document.getElementById("interestRate").value = adjustedInterestRate.toFixed(2);
     document.getElementById("adjustedInterestRate").textContent = `Adjusted Interest Rate: ${adjustedInterestRate.toFixed(2)}%`;
 }
 
-// Function to calculate IRR using yearly cash flow method (simplified approach)
+function calculateEMI() {
+    const loanAmount = parseFloat(document.getElementById("loanAmount").value);
+    const interestRate = parseFloat(document.getElementById("interestRate").value) / 100 / 12;
+    const loanTenure = parseInt(document.getElementById("loanTenure").value);
+
+    const emi = (loanAmount * interestRate) / (1 - Math.pow(1 + interestRate, -loanTenure));
+    const totalRepayment = emi * loanTenure;
+    const totalInterest = totalRepayment - loanAmount;
+    const irr = calculateIRR(loanAmount, emi, loanTenure);
+
+    document.getElementById("emiResult").textContent = emi.toFixed(2);
+    document.getElementById("totalInterest").textContent = totalInterest.toFixed(2);
+    document.getElementById("totalRepayment").textContent = totalRepayment.toFixed(2);
+    document.getElementById("irrResult").textContent = irr.toFixed(2);
+
+    createRepaymentSchedule(loanAmount, emi, interestRate, loanTenure);
+}
+
 function calculateIRR(principal, emi, months) {
-    let low = 0.0001;  // Lower bound for IRR
-    let high = 1;      // Upper bound for IRR
-    let irr = (low + high) / 2; // Initial guess for IRR
+    let low = 0.0001;
+    let high = 1;
+    let irr = (low + high) / 2;
     let npv = calculateNPV(principal, emi, irr, months);
-    let tolerance = 0.0001; // Desired precision
+    let tolerance = 0.0001;
 
     while (Math.abs(npv) > tolerance) {
         if (npv > 0) {
-            low = irr;  // Increase the guess if npv > 0
+            low = irr;
         } else {
-            high = irr; // Decrease the guess if npv < 0
+            high = irr;
         }
-
-        irr = (low + high) / 2; // Update the guess
-        npv = calculateNPV(principal, emi, irr, months); // Calculate new NPV
+        irr = (low + high) / 2;
+        npv = calculateNPV(principal, emi, irr, months);
     }
 
-    return irr * 100; // Return as percentage (annualized IRR)
+    return irr * 100;
 }
 
-// Function to calculate NPV (Net Present Value) using yearly cash flows
 function calculateNPV(principal, emi, irr, months) {
-    let npv = -principal; // Initial outflow is the loan amount
-    const years = Math.floor(months / 12); // Number of years for the loan
-
-    // Calculate annual NPV by summing up cash flows for each year
+    let npv = -principal;
+    const years = Math.floor(months / 12);
     for (let i = 1; i <= years; i++) {
-        const yearlyEMI = emi * 12;  // Convert monthly EMI to yearly EMI
-        npv += yearlyEMI / Math.pow(1 + irr, i); // Discount each annual EMI by the IRR
+        const yearlyEMI = emi * 12;
+        npv += yearlyEMI / Math.pow(1 + irr, i);
     }
     return npv;
 }
 
-// Function to generate the repayment schedule
 function createRepaymentSchedule(principal, emi, interestRate, months) {
     const scheduleTable = document.getElementById("scheduleTable").getElementsByTagName('tbody')[0];
     let outstandingBalance = principal;
     let totalInterestPaid = 0;
-    const years = Math.floor(months / 12); // Number of years for the loan
+    const years = Math.floor(months / 12);
 
     for (let i = 1; i <= years; i++) {
-        const interestPayment = outstandingBalance * interestRate * 12; // Yearly interest
-        const principalPayment = emi * 12 - interestPayment; // Principal paid in a year
+        const interestPayment = outstandingBalance * interestRate * 12;
+        const principalPayment = emi * 12 - interestPayment;
         outstandingBalance -= principalPayment;
-        totalInterestPaid += interestPayment;
 
         const row = scheduleTable.insertRow();
-        row.innerHTML = `
-            <td>${i}</td>
-            <td>${(emi * 12).toFixed(2)}</td> <!-- Yearly EMI -->
-            <td>${principalPayment.toFixed(2)}</td>
-            <td>${interestPayment.toFixed(2)}</td>
-            <td>${outstandingBalance.toFixed(2)}</td>
-        `;
+        row.insertCell(0).textContent = i; // Year
+        row.insertCell(1).textContent = emi.toFixed(2);
+        row.insertCell(2).textContent = principalPayment.toFixed(2);
+        row.insertCell(3).textContent = interestPayment.toFixed(2);
+        row.insertCell(4).textContent = outstandingBalance.toFixed(2);
     }
-}
-
-function downloadPDF() {
-    // Code to generate PDF (you can use jsPDF for this)
 }
