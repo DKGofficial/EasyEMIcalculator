@@ -35,12 +35,13 @@
             </div>
 
             <div class="input-group">
-                <label for="cibilScore">CIBIL Score:</label>
-                <input type="number" id="cibilScore" placeholder="Enter CIBIL score (300-900)">
+                <label for="panCardNumber">PAN Card Number:</label>
+                <input type="text" id="panCardNumber" placeholder="Enter your PAN card number">
             </div>
 
+            <button onclick="fetchCibilScore()">Fetch CIBIL Score</button>
             <button onclick="calculateEMI()">Calculate EMI</button>
-            
+
             <div class="result">
                 <h2>Monthly EMI: ₹<span id="emiResult">0</span></h2>
                 <h3>Total Interest Payable: ₹<span id="totalInterest">0</span></h3>
@@ -48,13 +49,11 @@
                 <h3>Internal Rate of Return (IRR) per Year: <span id="irrResult">0</span>%</h3>
             </div>
 
-            <!-- CIBIL Feedback Section -->
             <div class="cibil-feedback">
-                <h3 id="cibilFeedback">Enter your CIBIL score to check eligibility and loan conditions.</h3>
+                <h3 id="cibilFeedback">Enter your PAN card number to fetch your CIBIL score.</h3>
                 <h3 id="adjustedInterestRate">Adjusted Interest Rate: 0%</h3>
             </div>
 
-            <!-- Repayment Schedule Section -->
             <div class="schedule">
                 <h2>Repayment Schedule</h2>
                 <div class="table-container">
@@ -74,7 +73,6 @@
                     </table>
                 </div>
 
-                <!-- Download Button -->
                 <button onclick="downloadPDF()" class="download-btn">Download Schedule as PDF</button>
             </div>
         </div>
