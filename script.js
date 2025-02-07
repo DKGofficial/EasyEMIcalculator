@@ -11,7 +11,7 @@ function calculateEMI() {
     const totalRepayment = emi * loanTenure;
     const totalInterest = totalRepayment - loanAmount;
 
-    // Calculate IRR (approximate using cash flow method)
+    // Calculate IRR (approximate using yearly cash flow method)
     const irr = calculateIRR(loanAmount, emi, loanTenure);
     
     // Display results
@@ -24,7 +24,7 @@ function calculateEMI() {
     createRepaymentSchedule(loanAmount, emi, interestRate, loanTenure);
 }
 
-// Function to calculate IRR using cash flow method (simplified approach)
+// Function to calculate IRR using yearly cash flow method (simplified approach)
 function calculateIRR(principal, emi, months) {
     let low = 0.0001;  // Lower bound for IRR
     let high = 1;      // Upper bound for IRR
@@ -43,14 +43,18 @@ function calculateIRR(principal, emi, months) {
         npv = calculateNPV(principal, emi, irr, months); // Calculate new NPV
     }
 
-    return irr * 100; // Return as percentage
+    return irr * 100; // Return as percentage (annualized IRR)
 }
 
-// Function to calculate NPV (Net Present Value)
+// Function to calculate NPV (Net Present Value) using yearly cash flows
 function calculateNPV(principal, emi, irr, months) {
     let npv = -principal; // Initial outflow is the loan amount
-    for (let i = 1; i <= months; i++) {
-        npv += emi / Math.pow(1 + irr, i); // Discount each EMI
+    const years = Math.floor(months / 12); // Number of years for the loan
+
+    // Calculate annual NPV by summing up cash flows for each year
+    for (let i = 1; i <= years; i++) {
+        const yearlyEMI = emi * 12;  // Convert monthly EMI to yearly EMI
+        npv += yearlyEMI / Math.pow(1 + irr, i); // Discount each annual EMI by the IRR
     }
     return npv;
 }
@@ -60,24 +64,12 @@ function createRepaymentSchedule(principal, emi, interestRate, months) {
     const scheduleTable = document.getElementById("scheduleTable").getElementsByTagName('tbody')[0];
     let outstandingBalance = principal;
     let totalInterestPaid = 0;
+    const years = Math.floor(months / 12); // Number of years for the loan
 
-    for (let i = 1; i <= months; i++) {
-        const interestPayment = outstandingBalance * interestRate;
-        const principalPayment = emi - interestPayment;
+    for (let i = 1; i <= years; i++) {
+        const interestPayment = outstandingBalance * interestRate * 12; // Yearly interest
+        const principalPayment = emi * 12 - interestPayment; // Principal paid in a year
         outstandingBalance -= principalPayment;
         totalInterestPaid += interestPayment;
 
-        const row = scheduleTable.insertRow();
-        row.innerHTML = `
-            <td>${i}</td>
-            <td>${emi.toFixed(2)}</td>
-            <td>${principalPayment.toFixed(2)}</td>
-            <td>${interestPayment.toFixed(2)}</td>
-            <td>${outstandingBalance.toFixed(2)}</td>
-        `;
-    }
-}
-
-function downloadPDF() {
-    // Code to generate PDF (you can use jsPDF for this)
-}
+        const row = sched
