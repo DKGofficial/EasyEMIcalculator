@@ -12,6 +12,7 @@ body {
     align-items: center;
     min-height: 100vh;
     padding: 20px;
+    box-sizing: border-box;
 }
 
 .calculator-container {
@@ -21,10 +22,11 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 600px;
+    box-sizing: border-box;
 }
 
 .calculator-image {
-    width: 50px;
+    width: 60px;
     display: block;
     margin: 0 auto;
 }
@@ -115,4 +117,42 @@ table th, table td {
 
 .download-btn:hover {
     background-color: #0056b3;
+}
+
+/* Responsive Styles for Mobile */
+@media screen and (max-width: 600px) {
+    .calculator-container {
+        padding: 15px;
+        width: 100%;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    .input-group label {
+        font-size: 14px;
+    }
+
+    .input-group input {
+        font-size: 14px;
+    }
+
+    button {
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    .result h2, .result h3 {
+        font-size: 16px;
+    }
+
+    .schedule h2 {
+        font-size: 18px;
+    }
+
+    .download-btn {
+        font-size: 16px;
+        padding: 12px 18px;
+    }
 }
