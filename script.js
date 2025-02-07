@@ -24,25 +24,27 @@ function calculateEMI() {
     createRepaymentSchedule(loanAmount, emi, interestRate, loanTenure);
 }
 
-// Function to calculate IRR using cash flow (approximate)
+// Function to calculate IRR using cash flow method
 function calculateIRR(principal, emi, months) {
     let irr = 0.1; // Start with an initial guess for IRR (10%)
     let tolerance = 0.0001; // Desired precision
     let maxIterations = 1000; // Max iterations to prevent infinite loops
-    
+    let npv, derivative;
+
     for (let i = 0; i < maxIterations; i++) {
-        let npv = calculateNPV(principal, emi, irr, months);
+        npv = calculateNPV(principal, emi, irr, months);
         if (Math.abs(npv) < tolerance) {
             return irr * 100; // Return as percentage
         }
-        
-        let derivative = calculateNPVDerivative(principal, emi, irr, months);
+
+        derivative = calculateNPVDerivative(principal, emi, irr, months);
         irr -= npv / derivative; // Newton-Raphson method to adjust IRR guess
     }
 
-    return irr * 100; // Return as percentage
+    return irr * 100; // Return as percentage if max iterations are reached
 }
 
+// Function to calculate NPV (Net Present Value)
 function calculateNPV(principal, emi, irr, months) {
     let npv = -principal; // Initial outflow is the loan amount
     for (let i = 1; i <= months; i++) {
@@ -51,6 +53,7 @@ function calculateNPV(principal, emi, irr, months) {
     return npv;
 }
 
+// Function to calculate the derivative of NPV
 function calculateNPVDerivative(principal, emi, irr, months) {
     let derivative = 0;
     for (let i = 1; i <= months; i++) {
@@ -59,11 +62,12 @@ function calculateNPVDerivative(principal, emi, irr, months) {
     return derivative;
 }
 
+// Function to generate the repayment schedule
 function createRepaymentSchedule(principal, emi, interestRate, months) {
     const scheduleTable = document.getElementById("scheduleTable").getElementsByTagName('tbody')[0];
     let outstandingBalance = principal;
     let totalInterestPaid = 0;
-    
+
     for (let i = 1; i <= months; i++) {
         const interestPayment = outstandingBalance * interestRate;
         const principalPayment = emi - interestPayment;
