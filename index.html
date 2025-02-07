@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMI Calculator with CIBIL Score</title>
+    <title>EMI Calculator with IRR</title>
     <link rel="stylesheet" href="style.css">
 
     <!-- jsPDF Library -->
@@ -34,12 +34,6 @@
                 <input type="number" id="loanTenure" placeholder="Enter loan tenure in months">
             </div>
 
-            <div class="input-group">
-                <label for="panCardNumber">PAN Card Number:</label>
-                <input type="text" id="panCardNumber" placeholder="Enter your PAN card number">
-            </div>
-
-            <button onclick="fetchCibilScore()">Fetch CIBIL Score</button>
             <button onclick="calculateEMI()">Calculate EMI</button>
 
             <div class="result">
@@ -47,11 +41,6 @@
                 <h3>Total Interest Payable: ₹<span id="totalInterest">0</span></h3>
                 <h3>Total Repayment Amount: ₹<span id="totalRepayment">0</span></h3>
                 <h3>Internal Rate of Return (IRR) per Year: <span id="irrResult">0</span>%</h3>
-            </div>
-
-            <div class="cibil-feedback">
-                <h3 id="cibilFeedback">Enter your PAN card number to fetch your CIBIL score.</h3>
-                <h3 id="adjustedInterestRate">Adjusted Interest Rate: 0%</h3>
             </div>
 
             <div class="schedule">
